@@ -1,0 +1,46 @@
+
+    <!-- <nz-sider style="overflow: auto; height: 100vh; position: fixed; left: 0">
+        <div class="logo">
+        </div>
+        <ul nz-menu [nzMode]="'inline'" nzTheme='dark'>
+          <li nz-submenu [(nzOpen)]="openMap.sub1" (nzOpenChange)="openHandler('sub1')" routerLink='/list'>
+            <span title><i nz-icon type="mail"></i> Navigation One</span>
+            <ul>
+                <li nz-menu-item class="text_right">Option 1</li>
+                <li nz-menu-item class="text_right">Option 2</li>
+                <li nz-menu-item class="text_right">Option 3</li>
+                <li nz-menu-item class="text_right">Option 4</li>
+            </ul>
+          </li>
+          <li nz-submenu [(nzOpen)]="openMap.sub2" (nzOpenChange)="openHandler('sub2')">
+            <span title><i nz-icon type="appstore"></i> Navigation Two</span>
+            <ul>
+              <li nz-menu-item class="text_right">Option 5</li>
+              <li nz-menu-item class="text_right">Option 6</li>
+            </ul>
+          </li>
+          <li nz-submenu [(nzOpen)]="openMap.sub3" (nzOpenChange)="openHandler('sub3')">
+            <span title><i nz-icon type="setting"></i> Navigation Three</span>
+            <ul>
+              <li nz-menu-item class="text_right">Option 11</li>
+              <li nz-menu-item class="text_right">Option 12</li>
+              <li nz-menu-item class="text_right">Option 13</li>
+            </ul>
+          </li>
+        </ul>
+      </nz-sider> -->
+    
+      <ul nz-menu [nzTheme]="'dark'" [nzMode]="'inline'" [nzInlineCollapsed]="isCollapsed">
+          <ng-container *ngFor="let menu of menus;let i=index">
+            <li nz-submenu *ngIf="menu.children.length"  [(nzOpen)]="menu.subStatus" (nzOpenChange)="openHandler(menu.link)" >
+              <span title><i nz-icon [type]="menu.icon"></i><span class="nav-text">{{menu.text}}</span></span>
+              <ul>
+                <li nz-menu-item *ngFor="let children of menu.children" [routerLink]="[children.link]">{{children.text}}</li>
+              </ul> 
+            </li>
+            <li nz-menu-item *ngIf="menu.children.length === 0" [routerLink]="[menu.link]">
+              <span title><i nz-icon [type]="menu.icon"></i><span class="nav-text">{{menu.text}}</span></span>
+            </li>
+          </ng-container>
+      </ul>
+        

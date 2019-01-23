@@ -1,0 +1,198 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm($event,validateForm.value)">
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="email" nzRequired="validateForm.get('required')?.value">E-mail</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <input nz-input name="email" formControlName="email" type="email" id="email">
+            <nz-form-explain *ngIf="validateForm.get('email').dirty && validateForm.get('email').errors">
+                <ng-container *ngIf="validateForm.get('email').hasError('email')">
+                    The input is not valid E-mail!
+                </ng-container>
+            </nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="6" nzFor="password" nzRequired="validateForm.get('required')?.value">password</nz-form-label>
+        <nz-form-control [nzSpan]="14">
+            <input nz-input name="password" formControlName="password" type="password" id="password">
+            <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">Please
+                input your password</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="7" nzRequired>Confirm Password</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzHasFeedback>
+            <input nz-input type="password" formControlName="confirm" placeholder="confirm your password">
+            <nz-form-explain *ngIf="validateForm.get('confirm').dirty&&validateForm.get('confirm').errors">
+                <ng-container *ngIf="validateForm.get('confirm').hasError('required')">
+                    Please confirm your password!
+                </ng-container>
+                <ng-container *ngIf="validateForm.get('confirm').hasError('confirm')">
+                    Password is inconsistent!
+                </ng-container>
+            </nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzSpan]="14">
+            <button nz-button nzType="primary">提交</button>
+        </nz-form-control>
+    </nz-form-item>
+</form>
+
+
+<!-- //驱动模板的 -->
+
+<form #loginForm="ngForm" (ngSubmit)="submitLogin($event,loginForm)">
+    <nz-form-item nzFlex>
+        <nz-form-label nzFor="loginName" nzSpan="1-24" nzRequired>名称</nz-form-label>
+        <nz-form-control nzSpan="1-24" [nzValidateStatus]="loginForm.controls['loginName']" nzHasFeedback>
+            <input type="text" required nz-input name="loginName" [(ngModel)]="model.loginName" id="loginName"
+                #loginName="ngModel">
+            <!-- <nz-form-explain *ngIf="loginName.invalid">  
+                loginName is required
+            </nz-form-explain> -->
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nzFlex>
+        <nz-form-label nzFor="loginAge" nzSpan="1-24" nzRequired>loginAge</nz-form-label>
+        <nz-form-control nzSpan="1-24" [nzValidateStatus]="loginForm.controls['loginAge']">
+            <input nz-input type="text" minlength="10" maxlength="16" required name="loginAge" id="loginAge"
+                [(ngModel)]="model.loginAge" #loginAge="ngModel">
+            <nz-form-explain *ngIf="(loginAge.dirty || loginAge.touched)">
+                <ng-container *ngIf="loginAge.errors?.required">
+                    loginAge i required
+                </ng-container>
+                <ng-container *ngIf="loginAge.errors?.minlength || loginAge.errors?.maxlength">
+                    长度要在8-16之间
+                </ng-container>
+            </nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <!-- datePicker的使用 -->
+    <nz-form-item nzFlex>
+        <nz-form-label nzFor="startDate" nzSpan="1-24" nzRequired>开始时间</nz-form-label>
+        <nz-form-control nzSpan="1-24" [nzValidateStatus]="loginForm.controls['startDate']" nzHasFeedback>
+            <nz-date-picker required nzFormat="yyyy年MM月dd日 HH:mm:ss" [(ngModel)]="model.startDate" name="startDate"
+                nzPlaceHolder="Please select data" nzShowTime id="startDate" name="startDate" #startDate="ngModel"></nz-date-picker>
+            <nz-form-explain *ngIf="startDate.dirty && startDate.errors?.required">
+                statrDte is required
+            </nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <!-- 限定开始和结束日期 -->
+    <nz-form-item nzFlex>
+        <nz-form-label nzFor="start" nzSpan="1-24" nzRequired>开始时间</nz-form-label>
+        <nz-form-control nzSpan="1-24" [nzValidateStatus]="loginForm.controls['start']" nzHasFeedback>
+            <nz-date-picker required nzFormat="yyy-MM-dd HH:mm:ss" [(ngModel)]="model.start" name="start"
+                nzPlaceHolder="Please select data"  nzShowTime id="start" name="start" #start="ngModel"
+                [nzDisabledDate] = 'disabledDate'
+                (ngModelChange)="onStartChange($event)"
+                (nzOnOpenChange)="openEndDate($event)"
+                ></nz-date-picker>
+            <nz-form-explain *ngIf="start.dirty && start.errors?.required">
+                statrDte is required
+            </nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+        <nz-form-item nzFlex>
+            <nz-form-label nzFor="end" nzSpan="1-24" nzRequired>结束时间</nz-form-label>
+            <nz-form-control nzSpan="1-24" [nzValidateStatus]="loginForm.controls['end']" nzHasFeedback>
+                <nz-date-picker required nzFormat="yyyy-MM-dd HH:mm:ss" [(ngModel)]="model.end" name="start"
+                    nzPlaceHolder="Please select data" nzShowTime id="end" name="end" #end="ngModel"
+                    [nzDisabledDate]="disabledEnd"
+                    (ngModelChange)="onEndChange($event)"
+                    [nzOpen] = 'openStatus'
+                    (nzOnOpenChange)="handelEnd($event)"
+                    ></nz-date-picker>
+                <nz-form-explain *ngIf="end.dirty && end.errors?.required">
+                    end is required
+                </nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <button nz-button nzType="dashed" [disabled]="loginForm.form.invalid">提交</button>
+        </nz-form-item>
+</form>
+<div>
+    {{model.loginAge}} ---{{model.loginName}}
+</div>
+
+
+<!-- <form nz-form>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5" nzFor="email2">Fail</nz-form-label>
+        <nz-form-control nzValidateStatus="email2.valid?'error':''" [nzSpan]="12" >
+            <input nz-input type="email" [(ngModel)]="email2" name="email2">
+            <nz-form-explain *ngIf="email2.valid">Should be combination of numbers & alphabets</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5">Warning</nz-form-label>
+        <nz-form-control nzValidateStatus="warning" [nzSpan]="12">
+            <input nz-input [ngModel]="'Warning'" name="warningValid">
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5">Validating</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzValidateStatus="validating" nzHasFeedback>
+            <input nz-input [ngModel]="'The content is being validated'" name="validating">
+            <nz-form-explain>I'm validating the content</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5">Success</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzValidateStatus="success" nzHasFeedback>
+            <input nz-input [ngModel]="'The content'" name="successValid">
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5">Warning</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzValidateStatus="warning" nzHasFeedback>
+            <input nz-input [ngModel]="'Warning'" name="warningHighValid">
+            <nz-form-explain>Should be combination of numbers & alphabets</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5">Fail</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzValidateStatus="error" nzHasFeedback>
+            <input nz-input [ngModel]="'unavailable choice'" name="invalidValid">
+            <nz-form-explain>Should be combination of numbers & alphabets</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5">Success</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzValidateStatus="success" nzHasFeedback>
+            <nz-date-picker name="date-picker-success" style="width: 100%"></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5">Warning</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzValidateStatus="warning" nzHasFeedback>
+            <nz-time-picker name="time-picker-warning" style="width: 100%"></nz-time-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5">Error</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzValidateStatus="error" nzHasFeedback>
+            <nz-select name="select-error" [ngModel]="'Option 1'">
+                <nz-option nzValue="Option 1" nzLabel="Option 1"></nz-option>
+                <nz-option nzValue="Option 2" nzLabel="Option 2"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5">Validating</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzValidateStatus="validating" nzHasFeedback>
+            <nz-select name="select-validate" [ngModel]="'Option 2'">
+                <nz-option nzValue="Option 1" nzLabel="Option 1"></nz-option>
+                <nz-option nzValue="Option 2" nzLabel="Option 2"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSpan]="5">Success</nz-form-label>
+        <nz-form-control [nzSpan]="12" nzValidateStatus="success" nzHasFeedback>
+            <nz-input-number name="inputnumber-success" style="width:100%"></nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+</form> -->

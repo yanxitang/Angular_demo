@@ -1,0 +1,17 @@
+<nz-layout class="layout">
+    <app-top-header (nzCollapsed)="launchSidebar()"></app-top-header>
+    <nz-layout>
+        <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed" [nzTrigger]="triggerTemplate">
+            <side-bar [isCollapsed]="isCollapsed"></side-bar>
+        </nz-sider>
+        <nz-layout [ngStyle]="{'margin-left':isCollapsed?'30px':'0px'}" class="layout-nz">
+            <nz-content style="background:#fff;padding:20px;">
+                <router-outlet>
+                </router-outlet>
+            </nz-content>
+            <nz-footer style="text-align: center;">
+                <a href="https://github.com/ZhouRenYou" target="_blank" style="outline: none;color: #565656">希孟</a>
+            </nz-footer>
+        </nz-layout>
+    </nz-layout>
+</nz-layout>

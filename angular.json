@@ -23,13 +23,19 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
+                "output": "/assets/"
+              }
             ],
             "styles": [
-              "src/styles.less"
+              "node_modules/ng-zorro-antd/src/ng-zorro-antd.less"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/echarts/dist/echarts.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -83,11 +89,12 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.less"
+              "node_modules/ng-zorro-antd/src/ng-zorro-antd.less"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/echarts/dist/echarts.min.js"
+            ],
             "assets": [
-              "src/favicon.ico",
               "src/assets"
             ]
           }

@@ -1,0 +1,26 @@
+<nz-header>
+    <div nz-row>
+        <div nz-col nzSpan="8">
+            <button nz-button [nzType]="'default'" (click)="toggleCollapsed()" style="margin-bottom: 10px;">
+                <i nz-icon [type]="isCollapsed?'menu-unfold':'menu-fold'"></i>
+            </button>
+        </div>
+        <div nz-col nzSpan="8" nzOffset="8" style="text-align: end;color:#fff">
+            <span style="color:#fff" title><i nz-icon type="appstore"></i></span>
+            <nz-dropdown [nzPlacement]="'bottomCenter'">
+                <a nz-dropdown style="color:#fff">
+                    操作
+                </a>
+                <ul nz-menu nzSelectable>
+                    <li nz-menu-item>
+                        <a>个人中心</a>
+                    </li>
+                    <li nz-menu-item (click)="loginOut()">
+                        <a>退出</a>
+                    </li>
+                </ul>
+            </nz-dropdown>
+        </div>
+    </div>
+
+</nz-header>

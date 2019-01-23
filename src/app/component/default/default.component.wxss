@@ -1,0 +1,6 @@
+.layout-nz {
+  padding: 24px 24px 24px;
+  min-height: calc(36vh);
+  margin-top: 0px;
+  margin-left: 0;
+}
