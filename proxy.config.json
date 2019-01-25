@@ -1,0 +1,12 @@
+{
+    "/api":{
+      "target":"http://dbnc.30days-tech.com/",
+      "secure":false,
+      "logLevel":"debug",
+      "changeOrigin":true,
+      "pathRewrite":{
+        "^/api":"http://dbnc.30days-tech.com/"
+      }
+  
+    }
+  }

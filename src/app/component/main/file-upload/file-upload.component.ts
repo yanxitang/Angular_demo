@@ -1,8 +1,10 @@
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { selfHttp } from './../../../service/selfhttp.service'
 import { uploadService } from 'src/app/service/fileUpload.service';
-
-
+import { HttpRequest, HttpClient, HttpEventType, HttpEvent, HttpResponse } from '@angular/common/http';
+import { NzMessageService, UploadXHRArgs } from 'ng-zorro-antd';
+import { forkJoin } from 'rxjs';
+import { environment } from '../../../../environments/environment'
 
 @Component({
   selector: 'app-file-upload',
@@ -14,7 +16,12 @@ export class FileUploadComponent implements OnInit {
   fileDOM;
   url: any = "";
   arr: [] = []
-  constructor(private el: ElementRef, private http: selfHttp, private render: Renderer2, private upload: uploadService) {
+  fileUploadUrl = '/api/dbnc/manager/common/upload'
+  constructor(private el: ElementRef,
+     private http: selfHttp, 
+     private render: Renderer2, 
+     private upload: uploadService,
+     private https:HttpClient) {
   }
 
   ngOnInit() {
@@ -108,6 +115,67 @@ export class FileUploadComponent implements OnInit {
   }
 
 
+  //ng-zorro-ant  文件流上传
+  customReq = (item: UploadXHRArgs) => {
+    var vm =this
+    // 构建一个 FormData 对象，用于存储文件或其他参数
+    const formData = new FormData();
+    // tslint:disable-next-line:no-any
+    formData.append('file', item.file as any);
+    formData.append('id', '1000');
+    const req = new HttpRequest('POST', vm.fileUploadUrl, formData, {
+      reportProgress : true,
+      withCredentials: true
+    });
+    // 始终返回一个 `Subscription` 对象，nz-upload 会在适当时机自动取消订阅
+    return this.https.request(req).subscribe((event: HttpEvent<{}>) => {
+      if (event.type === HttpEventType.UploadProgress) {
+        if (event.total > 0) {
+          // tslint:disable-next-line:no-any
+          (event as any).percent = event.loaded / event.total * 100;
+        }
+        // 处理上传进度条，必须指定 `percent` 属性来表示进度
+        item.onProgress(event, item.file);
+      } else if (event instanceof HttpResponse) {
+        // 处理成功
+        item.onSuccess(event.body, item.file, event);
+      }
+    }, (err) => {
+      // 处理失败
+      item.onError(err, item.file);
+    });
+  }
+
+  // 一个简单的分片上传
+  customBigReq = (item: UploadXHRArgs) => {
+    var vm =this
+    const size = item.file.size;
+    const chunkSize = parseInt((size / 3) + '', 10);
+    const maxChunk = Math.ceil(size / chunkSize);
+    const reqs = Array(maxChunk).fill(0).map((v: {}, index: number) => {
+      const start = index * chunkSize;
+      let end = start + chunkSize;
+      if (size - end < 0) {
+        end = size;
+      }
+      const formData = new FormData();
+      formData.append('file', item.file.slice(start, end));
+      formData.append('start', start.toString());
+      formData.append('end', end.toString());
+      formData.append('index', index.toString());
+      const req = new HttpRequest('POST', vm.fileUploadUrl, formData, {
+        withCredentials: true
+      });
+      return this.https.request(req);
+    });
+    return forkJoin(...reqs).subscribe(resules => {
+      // 处理成功
+      item.onSuccess({}, item.file, event);
+    }, (err) => {
+      // 处理失败
+      item.onError(err, item.file);
+    });
+  }
 
   // fileEvent(e:any){
   //   var vm= this;

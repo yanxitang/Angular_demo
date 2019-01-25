@@ -11,6 +11,12 @@ import { FileUploadComponent } from '../app/component/main/file-upload/file-uplo
 import { GaoMapComponent } from '../app/component/main/gao-map/gao-map.component'
 import { ChartComponent } from '../app/component/main/chart/chart.component'
 import { DefaultComponent } from '../app/component/default/default.component'
+
+import { VideoComponent } from '../app/component/main/video/video.component'
+import { EditComponent } from '../app/component/main/video/edit/edit.component'
+
+
+
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
@@ -34,11 +40,18 @@ const routes: Routes = [
       },
       {
         path: 'form', component: formComponent
+      },
+      {
+        path: 'video', component: VideoComponent,
+        children: [
+          {
+            path: 'edit', component: EditComponent
+          }
+        ]
       }
     ]
   }
-
-
+ 
 ];
 
 @NgModule({

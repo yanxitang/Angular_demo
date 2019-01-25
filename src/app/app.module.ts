@@ -43,6 +43,8 @@ import { FileUploadComponent } from './component/main/file-upload/file-upload.co
 import { GaoMapComponent } from './component/main/gao-map/gao-map.component';
 import { ChartComponent } from './component/main/chart/chart.component';
 import { LoginComponent } from './component/main/login/login.component';
+import { VideoComponent } from './component/main/video/video.component';
+import { EditComponent } from './component/main/video/edit/edit.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import { LoginComponent } from './component/main/login/login.component';
     FileUploadComponent,
     GaoMapComponent,
     ChartComponent,
-    LoginComponent
+    LoginComponent,
+    VideoComponent,
+    EditComponent
   ],
   entryComponents: [editModalComponent],
   imports: [

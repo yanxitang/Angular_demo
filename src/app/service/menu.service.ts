@@ -83,6 +83,18 @@ export class menuService {
                     icon: '',
                 }
             ]
+        },
+        {
+            text: '视频',
+            link: '',
+            icon: 'experiment',
+            subStatus: false,
+            children: [
+                {
+                    text: '视频列表',
+                    link: 'video',
+                    icon: '',
+                }]
         }
     ];
 

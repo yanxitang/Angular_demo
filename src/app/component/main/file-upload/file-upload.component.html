@@ -1,1 +1,11 @@
-<input #last type="file" id="inputLoad" [(ngModel)]="fileVal" (click)="changeUrl($event)"  multiple>
+<div>
+    <input #last type="file" id="inputLoad" [(ngModel)]="fileVal" (click)="changeUrl($event)"  multiple>
+    <nz-upload
+    nzAction=""
+    [nzCustomRequest]="customBigReq">
+    <button nz-button>
+      <i nz-icon type="upload"></i><span>Click to Upload</span>
+    </button>
+  </nz-upload>
+
+</div>

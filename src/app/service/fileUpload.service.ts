@@ -12,17 +12,17 @@ export class uploadService {
     //点击触发上传
     public initUpload(e: any, callback) {
         var vm = this
-        vm.http.ossget('你的授权请求接口', {},
+        vm.http.ossget('http://bwcc.30days-tech.com/bwcc/v1/oss/account', {},
             res => {
                 console.log(res)
                 if (res.resultStatus) {
-                    var data = res.resultData
-                    vm.client = new OSS({
+                        var data = res.resultData
+                        vm.client = new OSS({
                         accessKeyId: data.accessKeyId,
                         accessKeySecret: data.accessKeySecret,
                         stsToken: data.securityToken,
-                        endpoint: 'yours endpoint',
-                        bucket: 'yours bucket',
+                        endpoint: 'http://oss-cn-shanghai.aliyuncs.com',
+                        bucket: 'mini-dabainiu',
                         timeout: 300000,
                     });
                     // console.log(typeof e.target.files, e.target.files.length)
